@@ -5,7 +5,7 @@
     "name": "Create customer user account",
     "summary": "Create user from partner",
     "category": "Tools",
-    "version": "10.0.0.0.0",
+    "version": "11.0.0.0.0",
     "author": "Odoo Community Association (OCA),Therp BV",
     "license": "AGPL-3",
     "website": 'https://github.com/oca/server-auth',

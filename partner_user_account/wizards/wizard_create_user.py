@@ -1,8 +1,7 @@
-#-*- coding: utf-8 -*-
 # Copyright 2013-2019 Therp BV <https://therp.nl>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
-# pylint: disable=missing-docstring,protected-access
-from odoo import _, api, fields, models
+# pylint: disable=missing-docstring
+from odoo import api, fields, models
 
 
 class WizardCreateUser(models.TransientModel):
