@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="menu_partner_user_management"
+        name="Partner user management"
+        parent="base.menu_users"
+        action="action_partner_user_management"
+        groups="base.group_no_one"
+        sequence="9"
+        />
+
+</odoo>

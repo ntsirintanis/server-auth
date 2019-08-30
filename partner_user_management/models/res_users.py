@@ -12,7 +12,7 @@ class Resusers(models.Model):
             self, partner, template_user=False, login=False):
         """Create user for partner.
 
-        Needs authorization o read template user, but will use sudo()
+        Needs authorization to read template user, but will use sudo()
         for actual user creation.
         """
         login = login or partner.email
@@ -41,8 +41,7 @@ class Resusers(models.Model):
         It is very unlikely that this function will not return a template
         user, but it might happen if the default users have been deleted.
         """
-        company = partner.company_id or self._get_company()
-        return company.template_user_id or self.env.ref(
+        return self.env.ref(
             'auth_signup.default_template_user',
             raise_if_not_found=False) or self.env.ref(
                 'base.default_user', raise_if_not_found=False) or False
