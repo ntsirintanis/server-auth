@@ -12,6 +12,7 @@
         'base',
     ],
     "data": [
+        'data/ir_cron.xml',
         'views/partner_user_management.xml',
         'views/res_partner.xml',
         'views/action.xml',
