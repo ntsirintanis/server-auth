@@ -3,12 +3,14 @@
 
     <record id="cron_res_partner_user_creation" model="ir.cron">
         <field name="name">Automatically create users for partners</field>
+        <field name="active" eval="True"/>
+        <field name="user_id" ref="base.user_root"/>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
-        <field name="model" eval="'res.partner'"/>
-        <field name="function" eval="'cron_res_partner_user_creation'"/>
-        <field name="args" eval="'()'"/>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_res_partner_user_creation()</field>
     </record>
 
 </odoo>
