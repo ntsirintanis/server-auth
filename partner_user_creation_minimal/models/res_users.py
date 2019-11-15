@@ -8,7 +8,7 @@ class Resusers(models.Model):
     _inherit = 'res.users'
 
     @api.model
-    def create_for_partner(
+    def _create_for_partner(
             self, partner, template_user=False, login=False):
         """Create user for partner.
 
@@ -16,7 +16,7 @@ class Resusers(models.Model):
         for actual user creation.
         """
         login = login or partner.email
-        template_user = template_user or self.get_template_user(partner)
+        template_user = template_user
         if partner.user_ids:
             raise exceptions.UserError(
                 _('Partner %s already has a user account') %
@@ -31,17 +31,8 @@ class Resusers(models.Model):
             'login': login,
             'active': True}
         if template_user:
-            return template_user.sudo().copy(default=vals)
-        return self.sudo().create(vals)
-
-    @api.model
-    def get_template_user(self, partner):
-        """Get user to use as template for creation.
-
-        It is very unlikely that this function will not return a template
-        user, but it might happen if the default users have been deleted.
-        """
-        return self.env.ref(
-            'auth_signup.default_template_user',
-            raise_if_not_found=False) or self.env.ref(
-                'base.default_user', raise_if_not_found=False) or False
+            return template_user.sudo().with_context(
+                no_reset_password=True).copy(default=vals)
+        # Create and not invite
+        return self.sudo().with_context(
+            no_reset_password=True).create(vals)
