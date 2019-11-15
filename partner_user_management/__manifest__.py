@@ -4,7 +4,7 @@
     "name": "Create customer user account",
     "summary": "Create user from partner",
     "category": "Tools",
-    "version": "11.0.1.0.0",
+    "version": "11.0.0.0.0",
     "author": "Odoo Community Association (OCA),Therp BV",
     "license": "AGPL-3",
     "website": 'https://github.com/oca/server-auth',
@@ -13,11 +13,8 @@
     ],
     "data": [
         'data/ir_cron.xml',
-        'views/partner_user_management.xml',
-        'views/res_partner.xml',
-        'views/action.xml',
-        'views/menu.xml',
-        "security/ir.model.access.csv",
+        'security/ir.model.access.csv',
+        'views/res_company.xml',
         ],
     "installable": True,
 }
