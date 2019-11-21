@@ -1,7 +1,12 @@
 # Copyright 2013-2019 Therp BV <https://therp.nl>.
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 # pylint: disable=missing-docstring,protected-access
+import logging
+
 from odoo import api, models
+
+
+_logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
@@ -9,36 +14,42 @@ class ResPartner(models.Model):
 
     @api.model
     def cron_res_partner_user_creation(self):
-        """Automatically create users for partners if enabled.
+        """Automatically create users for partners if enabled from company.
 
-        Users will be created if partner has no user, and this is enabled
-        on the company for the partner, or else the company of the current
-        user.
+        Users will be created if partner has no user. This functionality
+        is applicable to a multi-company setting as well.
 
         As user-creation is very resource intensive, only 128 users will be
         created at a time.
         """
-        partners = self.search([('user_ids', '=', False)], limit=128)
-        partners.check_autocreate()
+        companies = self.env['res.company'].search([
+            ('minimal_enable_autocreate', '=', True),
+        ])
+        for company in companies:
+            partners = self.search([
+                ('user_ids', '=', False),
+                ('category_id', '=', company.minimal_category_id.id),
+                '|',
+                ('company_id', '=', company.id),
+                ('company_id', '=', False),
+            ], limit=128)
+            partners.check_autocreate(company.minimal_template_user_id)
 
     @api.multi
-    def check_autocreate(self):
+    def check_autocreate(self, template_user):
         user_model = self.env['res.users']
         for this in self:
-            if this.user_ids:
-                continue
-            company = this.company_id or self.env.user.company_id
-            if not company.minimal_enable_autocreate:
-                continue
-            if company.minimal_category_id not in this.category_id:
-                continue
             login = this._get_login()
             if not login:
                 continue
-            template = company.minimal_template_user_id or False
+            _logger.info(
+                "Creating user from partner with login %s and ID %d",
+                login,
+                this.id,
+            )
             user_model._create_for_partner(
                 this,
-                template_user=template,
+                template_user=template_user,
                 login=login,
             )
 
