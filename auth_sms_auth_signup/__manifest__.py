@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Therp BV <https://therp.nl>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
@@ -9,11 +8,11 @@
     "category": "Extra Tools",
     "summary": "Enforces SMS verification for password resets",
     "depends": [
-        'auth_signup',
-        'auth_sms',
+        "auth_signup",
+        "auth_sms",
     ],
     "data": [
-        'views/templates.xml',
+        "views/templates.xml",
     ],
     "auto_install": True,
 }
